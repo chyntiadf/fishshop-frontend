@@ -5,7 +5,7 @@
       <h1>Sign In</h1>
       <input type="text" v-model="username" placeholder="Username">
       <input type="password" v-model="password" placeholder="Password">
-      <button @click="onClickSignIn">
+      <button @click="onClickSignIn" :disabled="fetchLoading">
         Sign In
       </button>
       <p>OR</p>
@@ -24,12 +24,14 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      fetchLoading: false
     }
   },
   methods: {
     async onClickSignIn() {
       try {
+        this.fetchLoading = true;
         await axios({
           method: 'post',
           url: 'https://foreatapi.herokuapp.com/api/auth/login',
@@ -38,9 +40,11 @@ export default {
             password: this.password
           }
         });
-        await this.$router.replace('/home');
+        await this.$router.replace('/');
       } catch (e) {
         console.error(e);
+      } finally {
+        this.fetchLoading = false;
       }
     }
   }
@@ -88,6 +92,9 @@ export default {
       font-weight: bold;
       border-radius: 24px;
       background-color: #f66363;
+      &:disabled {
+        background-color: darkgrey;
+      }
     }
   }
 }

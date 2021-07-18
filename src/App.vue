@@ -17,6 +17,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   flex-direction: column;
+  position: relative;
   text-align: center;
   min-height: 100%;
   display: flex;

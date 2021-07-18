@@ -8,7 +8,7 @@
       <input type="password" v-model="password" placeholder="Password">
       <input type="number" v-model="phone" placeholder="Phone">
       <textarea placeholder="Address" v-model="address"/>
-      <button @click="onClickSignUp">
+      <button @click="onClickSignUp" :disabled="fetchLoading">
         Sign Up
       </button>
       <p>OR</p>
@@ -30,12 +30,14 @@ export default {
       username: '',
       password: '',
       phone: '',
-      address: ''
+      address: '',
+      fetchLoading: false
     }
   },
   methods: {
     async onClickSignUp() {
       try {
+        this.fetchLoading = true;
         await axios({
           method: 'post',
           url: 'https://foreatapi.herokuapp.com/api/auth/register',
@@ -52,9 +54,11 @@ export default {
             profilepic: 'https://via.placeholder.com/250'
           }
         });
-        await this.$router.replace('/signin');
+        await this.$router.replace('/');
       } catch (e) {
         console.error(e);
+      } finally {
+        this.fetchLoading = false;
       }
     }
   }
@@ -119,6 +123,9 @@ export default {
       font-weight: bold;
       border-radius: 24px;
       background-color: #f66363;
+      &:disabled {
+        background-color: darkgrey;
+      }
     }
   }
 }

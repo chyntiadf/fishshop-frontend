@@ -42,12 +42,12 @@
             <a class="nav-link active" aria-current="page" href="#">Customer Care</a>
           </li>
         </ul>
-      </div>
-      <div class="user-action-group">
-        <i class="bi bi-search"/>
-        <i class="bi bi-translate"/>
-        <i class="bi bi-cart3"/>
-        <i class="bi bi-person-fill"/>
+        <div class="user-action-group">
+          <i class="bi bi-search"/>
+          <i class="bi bi-translate"/>
+          <i class="bi bi-cart3"/>
+          <i class="bi bi-person-fill" @click="navigateToauth"/>
+        </div>
       </div>
     </div>
   </nav>
@@ -60,15 +60,22 @@ export default {
     return {
       webLogo: require('@/assets/logo.png')
     }
+  },
+  methods: {
+    navigateToauth() {
+      this.$router.push('/signin');
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .running-message {
+  z-index: 1;
   height: 40px;
   display: flex;
   color: #ffffff;
+  position: relative;
   align-items: center;
   justify-content: center;
   background-color: #f66363;
@@ -83,8 +90,12 @@ export default {
   }
 }
 .navbar {
+  z-index: 2;
   height: 88px;
+  position: relative;
+  backdrop-filter: blur(8px);
   box-shadow: 1px 2px 3px rgb(0 0 0 / 20%);
+  background-color: rgba(255, 254, 249, 0.5);
   .container-fluid {
     padding: 0 24px;
   }
@@ -97,11 +108,29 @@ export default {
     color: #000000;
   }
   .navbar-collapse {
+    position: relative;
     justify-content: center;
+    @media screen and (min-width: 769px) {
+      ul {
+        margin-left: -8rem;
+        .dropdown-menu {
+          margin-left: 0;
+        }
+      }
+    }
   }
   .user-action-group {
+    right: 0;
     display: flex;
+    position: absolute;
     flex-direction: row;
+    @media screen and (max-width: 768px){
+      & {
+        margin-top: 8px;
+        position: relative;
+        justify-content: center;
+      }
+    }
     i {
       width: 32px;
       height: 32px;
