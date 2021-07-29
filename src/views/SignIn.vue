@@ -40,6 +40,7 @@ export default {
             password: this.password
           }
         });
+        document.cookie = 'auth=true';
         await this.$router.replace('/');
       } catch (e) {
         console.error(e);

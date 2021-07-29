@@ -46,7 +46,15 @@
           <i class="bi bi-search"/>
           <i class="bi bi-translate"/>
           <i class="bi bi-cart3"/>
-          <i class="bi bi-person-fill" @click="navigateToauth"/>
+          <div v-if="authCookie" class="dropdown-container">
+            <i class="bi bi-person-fill"/>
+            <div class="custom-dropdown-outer">
+              <div class="custom-dropdown-inner">
+                <p @click="signOutUser">Sign Out</p>
+              </div>
+            </div>
+          </div>
+          <i v-else class="bi bi-person-fill" @click="navigateToauth"/>
         </div>
       </div>
     </div>
@@ -54,16 +62,23 @@
 </template>
 
 <script>
+const authCookie = document.cookie.match('auth=true');
+
 export default {
   name: 'SignIn',
   data() {
     return {
+      authCookie: authCookie && authCookie.length > 0,
       webLogo: require('@/assets/logo.png')
     }
   },
   methods: {
     navigateToauth() {
       this.$router.push('/signin');
+    },
+    signOutUser() {
+      document.cookie = "auth=true; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      window.location.reload();
     }
   }
 }
@@ -124,6 +139,38 @@ export default {
     display: flex;
     position: absolute;
     flex-direction: row;
+    .dropdown-container {
+      position: relative;
+      i {
+        border-radius: 100%;
+        background-color: #f66363;
+      }
+      .custom-dropdown-outer {
+        right: 0;
+        display: none;
+        position: absolute;
+        .custom-dropdown-inner {
+          width: 128px;
+          height: 40px;
+          display: flex;
+          margin-top: 8px;
+          border-radius: 4px;
+          align-items: center;
+          justify-content: center;
+          background-color: white;
+          p {
+            margin: 0;
+            width: 100%;
+            cursor: pointer;
+          }
+        }
+      }
+      &:hover {
+        .custom-dropdown-outer {
+          display: flex;
+        }
+      }
+    }
     @media screen and (max-width: 768px){
       & {
         margin-top: 8px;
